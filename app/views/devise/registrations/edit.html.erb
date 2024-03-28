@@ -70,9 +70,7 @@
           <%= f.submit "Update", class: "btn btn-primary" %>
         </div>
       <% end %>
-
-      <h4 class="text-center">Cancel my account</h4>
-      <div class="text-center">Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "mb-3 btn btn-danger" %></div>
+      <div class="text-center"> <%= button_to "Delete my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "mb-3 btn btn-danger" %></div>
       <div class="mb-3 text-center">
         <%= link_to "Back", :back, class: "btn btn-secondary" %>
       </div>
