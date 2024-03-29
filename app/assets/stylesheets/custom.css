@@ -3,12 +3,11 @@
 }
 
 .alert{
-  color: yellow;
+  color: rgb(91, 111, 201);
 }
 
 .notice{
-  background: rgb(94, 244, 122);
-  color: white;
+  color: rgb(94, 244, 122);
 }
 
 .bg-color-artist{
