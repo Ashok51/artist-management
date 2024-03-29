@@ -1,0 +1,16 @@
+#error_explanation{
+  color: red;
+}
+
+.alert{
+  color: yellow;
+}
+
+.notice{
+  background: rgb(94, 244, 122);
+  color: white;
+}
+
+.bg-color-artist{
+  background-color: #d8cbcba8;
+}

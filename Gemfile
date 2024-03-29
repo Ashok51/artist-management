@@ -47,6 +47,11 @@ gem 'devise'
 # For debugging
 gem 'pry-rails', :group => :development
 
+# For styling
+gem 'bootstrap', '~> 5.3.2'
+
+gem 'sass-rails', '>= 6'
+
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
