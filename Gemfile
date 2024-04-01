@@ -47,7 +47,9 @@ gem 'devise'
 # For debugging
 gem 'pry-rails', :group => :development
 
-gem 'sassc'
+gem "bootstrap"
+
+gem "sassc-rails"
 
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]

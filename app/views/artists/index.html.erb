@@ -1,7 +1,7 @@
 <!-- app/views/artists/index.html.erb -->
 <div class="container">
-  <h1 class="float-start">All Artists</h1>
-  <%= link_to "New Artist", new_artist_path, class: "btn btn-primary float-end" %>
+  <h3 class="float-start">All Artists</h3>
+  <%= link_to "Add Artist", new_artist_path, class: "btn btn-primary float-end" %>
 
   <% if @artists.any? %>
     <table class="table">
@@ -21,7 +21,7 @@
         <% @artists.each do |artist| %>
           <tr>
             <td><%= artist.name %></td>
-            <td><%= artist.date_of_birth %></td>
+            <td><%= artist.date_of_birth.strftime('%Y-%m-%d') %></td>
             <td><%= artist.gender %></td>
             <td><%= artist.address %></td>
             <td><%= artist.first_release_year %></td>

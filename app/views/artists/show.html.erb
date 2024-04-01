@@ -1,17 +1,27 @@
-<h1><%= @artist.name %></h1>
+<div class="container">
+  <h3><%= @artist.name %></h3>
 
-<p><strong>Date of Birth:</strong> <%= @artist.date_of_birth %></p>
-<p><strong>Gender:</strong> <%= @artist.gender %></p>
-<p><strong>Address:</strong> <%= @artist.address %></p>
-<p><strong>First Release Year:</strong> <%= @artist.first_release_year %></p>
-<p><strong>No. of Albums Released:</strong> <%= @artist.no_of_albums_released %></p>
+  <div class="row">
+    <div class="col-md-6">
+      <p><strong>Date of Birth:</strong> <%= @artist.date_of_birth.strftime('%Y-%m-%d') %></p>
+      <p><strong>Gender:</strong> <%= @artist.gender %></p>
+      <p><strong>Address:</strong> <%= @artist.address %></p>
+    </div>
+    <div class="col-md-6">
+      <p><strong>First Release Year:</strong> <%= @artist.first_release_year %></p>
+      <p><strong>No. of Albums Released:</strong> <%= @artist.no_of_albums_released %></p>
+    </div>
+  </div>
 
-<h2>Associated Musics:</h2>
-<ul>
-  <% @artist.musics.each do |music| %>
-    <li><%= music.title %> - <%= music.album_name %> (Genre: <%= music.genre %>)</li>
-  <% end %>
-</ul>
+  <h4>Associated Musics:</h4>
+  <ul class="list-group">
+    <% @artist.musics.each do |music| %>
+      <li class="list-group-item"><%= music.title %> - <%= music.album_name %> (Genre: <%= music.genre %>)</li>
+    <% end %>
+  </ul>
 
-<%= link_to 'Edit', edit_artist_path(@artist) %> |
-<%= link_to 'Back', artists_path %>
+  <div class="mt-3">
+    <%= link_to 'Edit', edit_artist_path(@artist), class: "btn btn-primary" %> |
+    <%= link_to 'Back', artists_path, class: "btn btn-secondary" %>
+  </div>
+</div>
