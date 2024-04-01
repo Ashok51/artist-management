@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   root "dashboard#index"
 
   resources :artists
+  resources :musics
 end
