@@ -1,0 +1,40 @@
+<!-- app/views/artists/index.html.erb -->
+<div class="container">
+  <h1 class="float-start">All Artists</h1>
+  <%= link_to "New Artist", new_artist_path, class: "btn btn-primary float-end" %>
+
+  <% if @artists.any? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Date of Birth</th>
+          <th>Gender</th>
+          <th>Address</th>
+          <th>First Released Year</th>
+          <th>No. of Albums Released</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @artists.each do |artist| %>
+          <tr>
+            <td><%= artist.name %></td>
+            <td><%= artist.date_of_birth %></td>
+            <td><%= artist.gender %></td>
+            <td><%= artist.address %></td>
+            <td><%= artist.first_release_year %></td>
+            <td><%= artist.no_of_albums_released %></td>
+            <td><%= artist.created_at %></td>
+            <td>
+              <%= link_to "Edit", edit_artist_path(artist), class: "btn btn-secondary" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No artists found.</p>
+  <% end %>
+</div>

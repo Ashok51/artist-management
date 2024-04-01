@@ -1,0 +1,17 @@
+<h1><%= @artist.name %></h1>
+
+<p><strong>Date of Birth:</strong> <%= @artist.date_of_birth %></p>
+<p><strong>Gender:</strong> <%= @artist.gender %></p>
+<p><strong>Address:</strong> <%= @artist.address %></p>
+<p><strong>First Release Year:</strong> <%= @artist.first_release_year %></p>
+<p><strong>No. of Albums Released:</strong> <%= @artist.no_of_albums_released %></p>
+
+<h2>Associated Musics:</h2>
+<ul>
+  <% @artist.musics.each do |music| %>
+    <li><%= music.title %> - <%= music.album_name %> (Genre: <%= music.genre %>)</li>
+  <% end %>
+</ul>
+
+<%= link_to 'Edit', edit_artist_path(@artist) %> |
+<%= link_to 'Back', artists_path %>

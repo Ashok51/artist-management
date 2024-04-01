@@ -1,0 +1,49 @@
+<%= form_with(model: artist, data: { controller: 'nested-form',
+  nested_form_wrapper_selector_value: '.nested-form-wrapper' }) do |form| %>
+  <% if artist.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(artist.errors.count, "error") %> prohibited this artist from being saved:</h2>
+      <ul>
+        <% artist.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-inputs">
+    <%= form.label :name %>
+    <%= form.text_field :name, required: true %>
+
+    <%= form.label :date_of_birth %>
+    <%= form.date_field :date_of_birth, required: true %>
+
+    <%= form.label :gender %>
+    <%= form.select :gender, Artist.genders.keys, { prompt: 'Select Gender' } %>
+
+    <%= form.label :address %>
+    <%= form.text_field :address, required: true %>
+
+    <%= form.label :first_release_year %>
+    <%= form.number_field :first_release_year, required: true %>
+  </div>
+
+    <% artist.musics.each do |music| %>
+      <%= form.fields_for :musics, music do |music_fields| %>
+        <%= render "artists/music_fields", f: music_fields %>
+      <% end %>
+    <% end %>
+
+  <template data-nested-form-target="template">
+    <%= form.fields_for :musics, Music.new, child_index: 'NEW_RECORD' do |music_fields| %>
+      <%= render "artists/music_fields", f: music_fields %>
+    <% end %>
+  </template>
+  
+  <div data-nested-form-target="target"></div>
+  <button type="button" data-action="nested-form#add">Add Music</button>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

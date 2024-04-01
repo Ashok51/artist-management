@@ -1,0 +1,14 @@
+<div class="nested-form-wrapper" data-new-record="<%= f.object.new_record? %>">
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+
+  <%= f.label :album_name %>
+  <%= f.text_field :album_name %>
+
+  <%= f.label :genre %>
+  <%= f.select :genre, Music.genres.keys, { prompt: 'Select Genre' } %>
+
+
+  <button type="button" data-action="nested-form#remove"> Remove music </button>
+  <%= f.hidden_field :_destroy %>
+</div>
