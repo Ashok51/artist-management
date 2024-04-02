@@ -22,8 +22,8 @@
       <tbody>
         <% @artists.each do |artist| %>
           <tr>
-            <td><%= artist.name %></td>
-            <td><%= artist.date_of_birth.strftime('%Y-%m-%d') %></td>
+            <td><%= link_to artist.name, artist_path(artist) %></td>
+            <td><%= artist&.date_of_birth&.strftime('%Y-%m-%d') %></td>
             <td><%= artist.gender %></td>
             <td><%= artist.address %></td>
             <td><%= artist.first_release_year %></td>
