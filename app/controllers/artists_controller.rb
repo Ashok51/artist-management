@@ -18,6 +18,10 @@ class ArtistsController < ApplicationController
     end
   end
 
+  def show
+    @artist = Artist.find(params[:id])
+  end
+
   def edit
     @artist = Artist.find(params[:id])
   end
@@ -32,8 +36,10 @@ class ArtistsController < ApplicationController
     end
   end
 
-  def show
+  def destroy
     @artist = Artist.find(params[:id])
+    @artist.destroy
+    redirect_to artists_url, notice: 'Artist was successfully deleted.'
   end
 
   private

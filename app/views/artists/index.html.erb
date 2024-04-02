@@ -1,6 +1,8 @@
 <!-- app/views/artists/index.html.erb -->
 <div class="container">
-  <h3 class="float-start">All Artists</h3>
+  <% if @artists.any? %>
+    <h3 class="float-start">All Artists</h3>
+  <% end %>
   <%= link_to "Add Artist", new_artist_path, class: "btn btn-primary float-end" %>
 
   <% if @artists.any? %>
@@ -28,13 +30,17 @@
             <td><%= artist.no_of_albums_released %></td>
             <td><%= artist.created_at %></td>
             <td>
-              <%= link_to "Edit", edit_artist_path(artist), class: "btn btn-secondary" %>
+              <%= link_to "Edit", edit_artist_path(artist), class: "btn btn-secondary btn-sm" %>
+              <%= link_to "Remove", artist, class: "btn btn-danger btn-sm", data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
   <% else %>
-    <p>No artists found.</p>
+    <p>No artists found. But you can Add by clicking Add Artist button.</p>
   <% end %>
 </div>
