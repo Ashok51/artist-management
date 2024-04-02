@@ -6,14 +6,14 @@ class ArtistsController < ApplicationController
   before_action :set_artist, only: %i[show edit update destroy]
 
   def index
-    @artists = Artist.all
+    @artists = Artist.page(params[:page])
   end
 
   def import
     CsvImportService.import_artists_and_musics(params[:file])
     redirect_to root_url, notice: 'Artists and Musics imported successfully.'
   rescue StandardError => e
-    handle_error("An error occurred during import. Please try again later.")
+    handle_error('An error occurred during import. Please try again later.')
   end
 
   def export

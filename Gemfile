@@ -57,6 +57,9 @@ gem 'rubocop', '~> 1.62', require: false
 #for n+1 queries
 gem 'bullet', group: :development
 
+#for pagignation
+gem 'kaminari', '~> 1.2', '>= 1.2.2'
+
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
