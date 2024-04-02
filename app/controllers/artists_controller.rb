@@ -1,6 +1,8 @@
 class ArtistsController < ApplicationController
   require 'csv'
 
+  before_action :set_artist, only: [:show, :edit, :update, :destroy]
+
   def index
     @artists = Artist.all
   end
@@ -10,18 +12,20 @@ class ArtistsController < ApplicationController
       CsvImportService.import_artists_and_musics(params[:file])
       redirect_to root_url, notice: "Artists and Musics imported successfully."
     rescue StandardError => e
-      flash[:alert] = "An error occurred during import: #{e.message}"
-      redirect_to root_url
+      handle_error("An error occurred during import: #{e.message}")
     end
   end
 
   def export
-    @artists = Artist.includes(:musics)
-
-    respond_to do |format|
-      format.csv do
-        send_data generate_csv_data(@artists), filename: "artists_with_musics.csv"
+    begin
+      @artists = Artist.includes(:musics)
+      respond_to do |format|
+        format.csv do
+          send_data generate_csv_data(@artists), filename: "artists_with_musics.csv"
+        end
       end
+    rescue StandardError => e
+      handle_error("An error occurred during export: #{e.message}")
     end
   end
 
@@ -32,47 +36,43 @@ class ArtistsController < ApplicationController
 
   def create
     @artist = Artist.new(artist_params)
-    if @artist.save!
-      flash[:notice] = "Artist Created Successfully."
-      redirect_to @artist
+    if @artist.save
+      redirect_to @artist, notice: "Artist Created Successfully."
     else
       render :new
     end
   end
 
   def show
-    @artist = Artist.find(params[:id])
   end
 
   def edit
-    @artist = Artist.find(params[:id])
   end
 
   def update
-    @artist = Artist.find(params[:id])
-    if @artist.update!(artist_params)
-      flash[:notice] = "Artist updated successfully."
-      redirect_to @artist
+    if @artist.update(artist_params)
+      redirect_to @artist, notice: "Artist updated successfully."
     else
       render :edit
     end
   end
 
   def destroy
-    @artist = Artist.find(params[:id])
     @artist.destroy
     redirect_to artists_url, notice: 'Artist was successfully deleted.'
   end
 
   private
 
+  def set_artist
+    @artist = Artist.find(params[:id])
+  end
+
   def artist_params
     params.require(:artist).permit(:name, :date_of_birth,
-                                    :gender, :address, :first_release_year,
-                                    :no_of_albums_released,
-                                    musics_attributes: %i[
-                                      id title album_name genre _destroy
-                                    ])
+                                   :gender, :address, :first_release_year,
+                                   :no_of_albums_released,
+                                   musics_attributes: %i[id title album_name genre _destroy])
   end
 
   def generate_csv_data(artists)
@@ -85,9 +85,15 @@ class ArtistsController < ApplicationController
             csv << [artist.name, artist.date_of_birth, artist.address, artist.first_release_year, artist.gender, artist.no_of_albums_released, music.title, music.album_name, music.genre]
           end
         else
+          # for artists with no music
           csv << [artist.name, artist.date_of_birth, artist.address, artist.first_release_year, artist.gender, artist.no_of_albums_released]
         end
       end
     end
+  end
+
+  def handle_error(message)
+    flash[:alert] = message
+    redirect_to root_url
   end
 end
