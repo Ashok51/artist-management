@@ -1,0 +1,7 @@
+<%- headers = ['Name', 'Date of Birth', 'Address', 'First Release Year', 'Gender', 'No. of Albums Released', 'Music Title', 'Album Name', 'Genre'] -%>
+<%= CSV.generate_line(headers) %>
+<% @artists.each do |artist| %>
+  <% artist.musics.each do |music| %>
+    <%= CSV.generate_line([artist.name, artist.date_of_birth, artist.address, artist.first_release_year, artist.gender, artist.no_of_albums_released, music.title, music.album_name, music.genre]) %>
+  <% end %>
+<% end %>

@@ -1,9 +1,25 @@
 <!-- app/views/artists/index.html.erb -->
 <div class="container">
-  <% if @artists.any? %>
-    <h3 class="float-start">All Artists</h3>
-  <% end %>
-  <%= link_to "Add Artist", new_artist_path, class: "btn btn-primary float-end" %>
+  <h3 class="float-start">All Artists</h3>
+
+  <%= link_to "Add Artist", new_artist_path, class: "btn btn-primary float-end me-2" %>
+
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-2">
+      <%= link_to export_artists_path(format: :csv), class: "btn btn-success float-end" do %>
+        <i class="bi bi-download"></i> Export
+      <% end %>
+    </div>
+    <div class="col-md-6">
+      <%= form_tag import_artists_path, multipart: true do %>
+        <div class="input-group">
+          <%= file_field_tag :file, class: "form-control", id: "inputFile", accept: ".csv" %>
+          <button type="submit" class="btn btn-primary">Import CSV</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
 
   <% if @artists.any? %>
     <table class="table">
@@ -41,6 +57,8 @@
       </tbody>
     </table>
   <% else %>
-    <p>No artists found. But you can Add by clicking Add Artist button.</p>
+    <div class="container">
+      <p>No artists found. But you can Add by clicking Add Artist button.</p>
+    </div>
   <% end %>
 </div>

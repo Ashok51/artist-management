@@ -5,7 +5,7 @@ class Artist < ApplicationRecord
                  female: 2,
                  other: 3 }
 
-  validates :name, :date_of_birth, :address, :first_release_year, presence: true
+  validates :date_of_birth, :address, :first_release_year, presence: true
 
   accepts_nested_attributes_for :musics, allow_destroy: true
 end
