@@ -1,0 +1,11 @@
+class Artist < ApplicationRecord
+  has_many :musics, dependent: :destroy
+  
+  enum gender: { male: 1,
+                 female: 2,
+                 other: 3 }
+
+  validates :name, :date_of_birth, :address, :first_release_year, presence: true
+
+  accepts_nested_attributes_for :musics, allow_destroy: true
+end

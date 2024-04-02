@@ -1,0 +1,46 @@
+<!-- app/views/artists/index.html.erb -->
+<div class="container">
+  <% if @artists.any? %>
+    <h3 class="float-start">All Artists</h3>
+  <% end %>
+  <%= link_to "Add Artist", new_artist_path, class: "btn btn-primary float-end" %>
+
+  <% if @artists.any? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Date of Birth</th>
+          <th>Gender</th>
+          <th>Address</th>
+          <th>First Released Year</th>
+          <th>No. of Albums Released</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @artists.each do |artist| %>
+          <tr>
+            <td><%= link_to artist.name, artist_path(artist) %></td>
+            <td><%= artist&.date_of_birth&.strftime('%Y-%m-%d') %></td>
+            <td><%= artist.gender %></td>
+            <td><%= artist.address %></td>
+            <td><%= artist.first_release_year %></td>
+            <td><%= artist.no_of_albums_released %></td>
+            <td><%= artist.created_at %></td>
+            <td>
+              <%= link_to "Edit", edit_artist_path(artist), class: "btn btn-secondary btn-sm" %>
+              <%= link_to "Remove", artist, class: "btn btn-danger btn-sm", data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No artists found. But you can Add by clicking Add Artist button.</p>
+  <% end %>
+</div>
