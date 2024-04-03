@@ -12,7 +12,7 @@ class ArtistsController < ApplicationController
   def import
     CsvImportService.import_artists_and_musics(params[:file])
     redirect_to root_url, notice: 'Artists and Musics imported successfully.'
-  rescue StandardError => e
+  rescue StandardError
     handle_error('An error occurred during import. Please try again later.')
   end
 
@@ -73,22 +73,35 @@ class ArtistsController < ApplicationController
 
   def generate_csv_data(artists)
     CSV.generate(headers: true) do |csv|
-      csv << ['Name', 'Date of Birth', 'Address', 'First Release Year', 'Gender', 'No. of Albums Released',
-              'Music Title', 'Album Name', 'Genre']
+      csv << artist_and_music_fields
 
       artists.each do |artist|
         if artist.musics.any?
           artist.musics.each do |music|
-            csv << [artist.name, artist.date_of_birth, artist.address, artist.first_release_year, artist.gender,
-                    artist.no_of_albums_released, music.title, music.album_name, music.genre]
+            csv << values_of_artist_and_music_object(music, artist)
           end
         else
           # for artists with no music
-          csv << [artist.name, artist.date_of_birth, artist.address, artist.first_release_year, artist.gender,
-                  artist.no_of_albums_released]
+          csv << values_of_artist_object(artist)
         end
       end
     end
+  end
+
+  def artist_and_music_fields
+    ['Name', 'Date of Birth', 'Address', 'First Release Year',
+     'Gender', 'No. of Albums Released',
+     'Music Title', 'Album Name', 'Genre']
+  end
+
+  def values_of_artist_and_music_object(music, artist)
+    [artist.name, artist.date_of_birth, artist.address, artist.first_release_year, artist.gender,
+     artist.no_of_albums_released, music.title, music.album_name, music.genre]
+  end
+
+  def values_of_artist_object(artist)
+    [artist.name, artist.date_of_birth, artist.address, artist.first_release_year, artist.gender,
+     artist.no_of_albums_released]
   end
 
   def handle_error(message)

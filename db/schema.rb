@@ -20,7 +20,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_01_134811) do
     t.integer "gender"
     t.text "address"
     t.integer "first_release_year"
-    t.integer "no_of_albums_released"
+    t.integer "no_of_albums_released", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
