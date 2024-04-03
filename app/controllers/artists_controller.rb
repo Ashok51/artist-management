@@ -1,30 +1,14 @@
 # frozen_string_literal: true
 
 class ArtistsController < ApplicationController
-  require 'csv'
-
-  before_action :set_artist, only: %i[show edit update destroy]
+  include ArtistMusicCreation
 
   def index
-    @artists = Artist.page(params[:page])
-  end
-
-  def import
-    CsvImportService.import_artists_and_musics(params[:file])
-    redirect_to root_url, notice: 'Artists and Musics imported successfully.'
-  rescue StandardError
-    handle_error('An error occurred during import. Please try again later.')
-  end
-
-  def export
-    @artists = Artist.includes(:musics)
-    respond_to do |format|
-      format.csv do
-        send_data generate_csv_data(@artists), filename: 'artists_with_musics.csv'
-      end
+    @artists = []
+    result = ActiveRecord::Base.connection.execute('SELECT * FROM artists')
+    result.each do |artist|
+      @artists << Artist.new(artist)
     end
-  rescue StandardError => e
-    handle_error("An error occurred during export: #{e.message}")
   end
 
   def new
@@ -33,79 +17,37 @@ class ArtistsController < ApplicationController
   end
 
   def create
-    @artist = Artist.new(artist_params)
-    if @artist.save
-      redirect_to @artist, notice: 'Artist Created Successfully.'
-    else
-      render :new
-    end
+    artist_id = create_artist_record
+
+    create_music_of_artist(artist_id)
+
+    redirect_to artists_url, notice: 'Artist created successfully.'
   end
 
-  def show; end
+  def show
+    artist_hash = show_artist(params[:id])
 
-  def edit; end
+    @artist = Artist.new(artist_hash.first)
+  end
+
+  def edit
+    show
+  end
 
   def update
-    if @artist.update(artist_params)
-      redirect_to @artist, notice: 'Artist updated successfully.'
-    else
-      render :edit
-    end
-  end
-
-  def destroy
-    @artist.destroy
-    redirect_to artists_url, notice: 'Artist was successfully deleted.'
   end
 
   private
 
-  def set_artist
-    @artist = Artist.find(params[:id])
-  end
-
   def artist_params
     params.require(:artist).permit(:name, :date_of_birth,
                                    :gender, :address, :first_release_year,
-                                   :no_of_albums_released,
-                                   musics_attributes: %i[id title album_name genre _destroy])
+                                   musics_attributes: %i[
+                                     id title album_name genre _destroy
+                                   ])
   end
 
-  def generate_csv_data(artists)
-    CSV.generate(headers: true) do |csv|
-      csv << artist_and_music_fields
-
-      artists.each do |artist|
-        if artist.musics.any?
-          artist.musics.each do |music|
-            csv << values_of_artist_and_music_object(music, artist)
-          end
-        else
-          # for artists with no music
-          csv << values_of_artist_object(artist)
-        end
-      end
-    end
-  end
-
-  def artist_and_music_fields
-    ['Name', 'Date of Birth', 'Address', 'First Release Year',
-     'Gender', 'No. of Albums Released',
-     'Music Title', 'Album Name', 'Genre']
-  end
-
-  def values_of_artist_and_music_object(music, artist)
-    [artist.name, artist.date_of_birth, artist.address, artist.first_release_year, artist.gender,
-     artist.no_of_albums_released, music.title, music.album_name, music.genre]
-  end
-
-  def values_of_artist_object(artist)
-    [artist.name, artist.date_of_birth, artist.address, artist.first_release_year, artist.gender,
-     artist.no_of_albums_released]
-  end
-
-  def handle_error(message)
-    flash[:alert] = message
-    redirect_to root_url
+  def musics_params
+    artist_params.require(:musics_attributes)
   end
 end

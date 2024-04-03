@@ -40,7 +40,7 @@
       <div class="col-md-4">
         <div class="form-group">
           <%= form.label :gender, class: "form-label" %>
-          <%= form.select :gender, Artist.genders.keys, { prompt: 'Select Gender' }, class: "form-select form-control" %>
+          <%= form.select :gender, gender_options_for_select, { prompt: 'Select Gender' }, class: "form-select form-control" %>
         </div>
       </div>
     </div>
