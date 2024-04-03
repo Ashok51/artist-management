@@ -35,6 +35,7 @@ class ArtistsController < ApplicationController
   end
 
   def update
+    binding.pry
   end
 
   private
