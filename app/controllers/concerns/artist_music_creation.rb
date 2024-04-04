@@ -57,7 +57,7 @@ module ArtistMusicCreation
       WHERE id = ?
     SQL
 
-    #for sanitize values and then execute
+    # for sanitize values and then execute
     query_with_field_values = [
       update_artist_sql,
       artist_params[:name],
@@ -83,7 +83,7 @@ module ArtistMusicCreation
     # Iterate over the musics_attributes and build SQL statements for updates
     musics_params.each_value do |music_params|
       music_id = music_params['id']
-      if music_params['_destroy'] == '1'  #removed music item during update
+      if music_params['_destroy'] == '1' # removed music item during update
         sql_delete = <<-SQL
           DELETE FROM musics
           WHERE id = #{music_id} AND artist_id = #{artist_id}

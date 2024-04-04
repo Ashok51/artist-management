@@ -3,6 +3,8 @@
 class ArtistsController < ApplicationController
   include ArtistMusicCreation
 
+  require 'csv'
+
   def index
     @artists = []
     result = ActiveRecord::Base.connection.execute('SELECT * FROM artists')
@@ -17,11 +19,15 @@ class ArtistsController < ApplicationController
   end
 
   def create
-    artist_id = create_artist_record
+    ActiveRecord::Base.transaction do
+      artist_id = create_artist_record
 
-    create_music_of_artist(artist_id)
-
+      create_music_of_artist(artist_id)
+    end
     redirect_to artists_url, notice: 'Artist created successfully.'
+  rescue ActiveRecord::StatementInvalid => e
+    puts "error:  #{e.message}"
+    redirect_to artists_url, alert: 'Unable to create artist.'
   end
 
   def show
@@ -35,21 +41,41 @@ class ArtistsController < ApplicationController
   end
 
   def update
-    update_artist_and_music
-
+    ActiveRecord::Base.transaction do
+      update_artist_and_music
+    end
     redirect_to artists_url, notice: 'Artist updated successfully.'
+  rescue ActiveRecord::StatementInvalid => e
+    puts "error:  #{e.message}"
+    redirect_to artists_url, alert: 'Unable to delete artist.'
   end
 
   def destroy
     ActiveRecord::Base.transaction do
       delete_artist_and_associated_musics
-    rescue ActiveRecord::StatementInvalid => e
-      puts "Unable to delete due to: #{e.message}"
     end
-
     redirect_to artists_url, notice: 'Artist deleted successfully.'
+  rescue ActiveRecord::StatementInvalid => e
+    puts "error:  #{e.message}"
+    redirect_to artists_url, alert: 'Unable to delete artist.'
   end
-  
+
+  def import
+    CsvImportService.import_artists_and_musics(params[:file])
+    redirect_to root_url, notice: 'Artists and Musics imported successfully.'
+  rescue StandardError => e
+    puts "error:  #{e.message}"
+    redirect_to artists_url, alert: 'Unable to delete artist.'
+  end
+
+  def export
+    csv_data = CsvExportService.export_artists_and_musics
+
+    send_data csv_data, filename: 'artists_with_musics.csv'
+  rescue StandardError => e
+    puts "error:  #{e.message}"
+    redirect_to artists_url, alert: 'Unable to delete artist.'
+  end
 
   private
 
