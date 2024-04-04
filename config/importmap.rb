@@ -10,3 +10,4 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 
 # pin "bootstrap", to: 'bootstrap.min.js', preload: true
 pin "@stimulus-components/rails-nested-form", to: "@stimulus-components--rails-nested-form.js" # @5.0.0
+pin "@rails/ujs", to: "@rails--ujs.js" # @7.1.3

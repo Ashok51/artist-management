@@ -57,6 +57,8 @@ gem 'rubocop', '~> 1.62', require: false
 #for n+1 queries
 gem 'bullet', group: :development
 
+gem 'rails-ujs'
+
 #for pagignation
 gem 'kaminari', '~> 1.2', '>= 1.2.2'
 

@@ -25,7 +25,7 @@ class ArtistsController < ApplicationController
   end
 
   def show
-    artist_hash = show_artist(params[:id])
+    artist_hash = show_artist
 
     @artist = Artist.new(artist_hash.first)
   end
@@ -35,8 +35,21 @@ class ArtistsController < ApplicationController
   end
 
   def update
-    binding.pry
+    update_artist_and_music
+
+    redirect_to artists_url, notice: 'Artist updated successfully.'
   end
+
+  def destroy
+    ActiveRecord::Base.transaction do
+      delete_artist_and_associated_musics
+    rescue ActiveRecord::StatementInvalid => e
+      puts "Unable to delete due to: #{e.message}"
+    end
+
+    redirect_to artists_url, notice: 'Artist deleted successfully.'
+  end
+  
 
   private
 
@@ -49,6 +62,6 @@ class ArtistsController < ApplicationController
   end
 
   def musics_params
-    artist_params.require(:musics_attributes)
+    artist_params[:musics_attributes].nil? ? [] : artist_params[:musics_attributes]
   end
 end

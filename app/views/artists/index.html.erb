@@ -46,10 +46,9 @@
             <td><%= artist.created_at %></td>
             <td>
               <%= link_to "Edit", edit_artist_path(artist), class: "btn btn-secondary btn-sm" %>
-              <%= link_to "Remove", artist, class: "btn btn-danger btn-sm", data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  } %>
+              <%= button_to "Delete", artist_path(artist), method: :delete,
+                             data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+
             </td>
           </tr>
         <% end %>
