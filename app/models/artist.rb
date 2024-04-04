@@ -14,4 +14,13 @@ class Artist < ApplicationRecord
   def update_albums_released(album_released_count)
     update!(no_of_albums_released: album_released_count)
   end
+
+  def self.build_artist_object_from_json(result)
+    artists = []
+    result.each do |artist|
+      artists << Artist.new(artist)
+    end
+
+    artists
+  end
 end

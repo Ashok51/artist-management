@@ -1,16 +1,25 @@
 # frozen_string_literal: true
 
 class ArtistsController < ApplicationController
-  include ArtistMusicCreation
-
   require 'csv'
+
+  include ArtistMusicCreation
 
   def index
     @artists = []
-    result = ActiveRecord::Base.connection.execute('SELECT * FROM artists')
-    result.each do |artist|
-      @artists << Artist.new(artist)
-    end
+    @page_number = params[:page].to_i || 1
+    per_page = 10 # Set the number of records per page
+
+    @total_pages = total_page_of_artist_table(per_page)
+
+    query = <<-SQL
+      SELECT * FROM artists
+      ORDER BY id
+    SQL
+
+    result = Pagination.paginate(query, @page_number, per_page)
+
+    @artists = Artist.build_artist_object_from_json(result)
   end
 
   def new

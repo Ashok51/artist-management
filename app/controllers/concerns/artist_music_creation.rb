@@ -34,6 +34,16 @@ module ArtistMusicCreation
     end
   end
 
+  def total_page_of_artist_table(per_page)
+    query = <<-SQL
+      SELECT COUNT(*) AS total_count FROM artists;
+    SQL
+
+    total_count = execute_sql(query).first['total_count'].to_i
+
+    (total_count.to_f / per_page).ceil
+  end
+
   def show_artist
     artist_id = params[:id]
 
