@@ -8,7 +8,7 @@ class ArtistsController < ApplicationController
   def index
     @artists = []
     @page_number = params[:page].to_i || 1
-    per_page = 10 # Set the number of records per page
+    per_page = 5 # Set the number of records per page
 
     @total_pages = total_page_of_artist_table(per_page)
 
