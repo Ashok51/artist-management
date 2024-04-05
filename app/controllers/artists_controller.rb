@@ -3,6 +3,8 @@
 class ArtistsController < ApplicationController
   require 'csv'
 
+  require_relative './concerns/sql_queries'
+
   include ArtistMusicCreation
 
   def index
@@ -12,10 +14,7 @@ class ArtistsController < ApplicationController
 
     @total_pages = total_page_of_artist_table(per_page)
 
-    query = <<-SQL
-      SELECT * FROM artists
-      ORDER BY id
-    SQL
+    query = SQLQueries::ORDER_ARTIST_RECORD
 
     result = Pagination.paginate(query, @page_number, per_page)
 

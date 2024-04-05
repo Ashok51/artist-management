@@ -19,23 +19,13 @@ class CsvImportService
   end
 
   def self.create_artist_from_csv(artist_values)
-    artist_sql = "INSERT INTO artists (name, date_of_birth, address, first_release_year, gender, no_of_albums_released, created_at, updated_at)
-    VALUES (#{artist_values}, NOW(), NOW())
-    ON CONFLICT (name) DO UPDATE SET
-      date_of_birth = EXCLUDED.date_of_birth,
-      address = EXCLUDED.address,
-      first_release_year = EXCLUDED.first_release_year,
-      gender = EXCLUDED.gender,
-      no_of_albums_released = EXCLUDED.no_of_albums_released,
-      updated_at = NOW()
-    RETURNING id"
+    artist_sql = SQLQueries::CREATE_ARTIST_FROM_CSV.call(artist_values)
 
     execute_sql(artist_sql)
   end
 
   def self.create_music_from_csv(music_values, artist_id)
-    music_sql = "INSERT INTO musics (title, album_name, genre, artist_id, created_at, updated_at)
-    VALUES (#{music_values}, #{artist_id}, NOW(), NOW())"
+    music_sql = SQLQueries::CREATE_MUSIC_FROM_CSV.call(music_values, artist_id)
 
     execute_sql(music_sql)
   end
