@@ -137,12 +137,14 @@ module ArtistMusicCreation
   end
 
   def delete_all_musics(artist_id)
-    sql_to_delete_musics = "DELETE FROM musics WHERE artist_id = #{artist_id}"
+    sql_to_delete_musics = SQLQueries::DELETE_ARTIST_MUSICS.call(artist_id)
+
     execute_sql(sql_to_delete_musics)
   end
 
   def delete_artist(artist_id)
-    sql_to_delete_artist = "DELETE FROM artists WHERE id = #{artist_id}"
+    sql_to_delete_artist = SQLQueries::DELETE_SPECIFIC_ARTIST.call(artist_id)
+    
     execute_sql(sql_to_delete_artist)
   end
 

@@ -72,4 +72,12 @@ module SQLQueries
      "INSERT INTO musics (title, album_name, genre, artist_id, created_at, updated_at)
       VALUES (#{music_values}, #{artist_id}, NOW(), NOW())"
   end
+
+  DELETE_ARTIST_MUSICS = lambda do |artist_id|
+    "DELETE FROM musics WHERE artist_id = #{artist_id}"
+  end
+
+  DELETE_SPECIFIC_ARTIST = lambda do |artist_id|
+    "DELETE FROM artists WHERE id = #{artist_id}"
+  end
 end
