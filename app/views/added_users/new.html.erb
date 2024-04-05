@@ -2,7 +2,7 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <h2 class="text-center">Create New User</h2>
-      <%= form_for(@user) do |f| %>
+      <%= form_for(@added_user, url: added_users_path) do |f| %>
         <div class="row">
           <div class="col-md-6">
             <%= render 'shared/users_and_registrations/user_primary_info', f: f %>
