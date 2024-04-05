@@ -5,7 +5,6 @@ class ArtistsController < ApplicationController
   include ArtistMusicCreation
   include DatabaseExecution
 
-
   require_relative './concerns/sql_queries'
 
   def index
@@ -35,7 +34,8 @@ class ArtistsController < ApplicationController
     end
     redirect_to artists_url, notice: 'Artist created successfully.'
   rescue ActiveRecord::StatementInvalid => e
-    puts "error:  #{e.message}"
+    Rails.logger.error("Error while creating artist: #{e.message}")
+
     redirect_to artists_url, alert: 'Unable to create artist.'
   end
 
@@ -55,8 +55,9 @@ class ArtistsController < ApplicationController
     end
     redirect_to artists_url, notice: 'Artist updated successfully.'
   rescue ActiveRecord::StatementInvalid => e
-    puts "error:  #{e.message}"
-    redirect_to artists_url, alert: 'Unable to delete artist.'
+    Rails.logger.error("Error updating artist: #{e.message}")
+
+    redirect_to artists_url, alert: 'Unable to update artist.'
   end
 
   def destroy
@@ -65,7 +66,8 @@ class ArtistsController < ApplicationController
     end
     redirect_to artists_url, notice: 'Artist deleted successfully.'
   rescue ActiveRecord::StatementInvalid => e
-    puts "error:  #{e.message}"
+    Rails.logger.error("Error while deleting artist: #{e.message}")
+
     redirect_to artists_url, alert: 'Unable to delete artist.'
   end
 
@@ -73,8 +75,9 @@ class ArtistsController < ApplicationController
     CsvImportService.import_artists_and_musics(params[:file])
     redirect_to root_url, notice: 'Artists and Musics imported successfully.'
   rescue StandardError => e
-    puts "error:  #{e.message}"
-    redirect_to artists_url, alert: 'Unable to delete artist.'
+    Rails.logger.error("Error while importing artist: #{e.message}")
+
+    redirect_to artists_url, alert: 'Unable to import artists.'
   end
 
   def export
@@ -82,8 +85,9 @@ class ArtistsController < ApplicationController
 
     send_data csv_data, filename: 'artists_with_musics.csv'
   rescue StandardError => e
-    puts "error:  #{e.message}"
-    redirect_to artists_url, alert: 'Unable to delete artist.'
+    Rails.logger.error("Error while exporting artists: #{e.message}")
+
+    redirect_to artists_url, alert: 'Unable to export the artists.'
   end
 
   private
