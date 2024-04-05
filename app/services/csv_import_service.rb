@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CsvImportService
+  extend DatabaseExecution
+
   def self.import_artists_and_musics(file)
     CSV.foreach(file.path, headers: true) do |row|
       artist_attrs = row.to_h.slice('name', 'date_of_birth', 'address', 'first_release_year', 'gender',
@@ -28,10 +30,6 @@ class CsvImportService
     music_sql = SQLQueries::CREATE_MUSIC_FROM_CSV.call(music_values, artist_id)
 
     execute_sql(music_sql)
-  end
-
-  def self.execute_sql(sql)
-    ActiveRecord::Base.connection.execute(sql)
   end
 
   def self.sanitize_and_quote(value)

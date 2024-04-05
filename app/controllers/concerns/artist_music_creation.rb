@@ -144,12 +144,8 @@ module ArtistMusicCreation
 
   def delete_artist(artist_id)
     sql_to_delete_artist = SQLQueries::DELETE_SPECIFIC_ARTIST.call(artist_id)
-    
-    execute_sql(sql_to_delete_artist)
-  end
 
-  def execute_sql(sql)
-    ActiveRecord::Base.connection.execute(sql)
+    execute_sql(sql_to_delete_artist)
   end
 
   def sanitize_and_execute_sql(field_values_with_query)

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CsvExportService
+  extend DatabaseExecution
+
   def self.export_artists_and_musics
     artists_with_musics = []
 
@@ -34,16 +36,8 @@ class CsvExportService
   end
 
   def self.fetch_artists_with_music
-    artists_query = <<-SQL
-      SELECT artists.*, musics.title AS music_title, musics.album_name AS music_album_name, musics.genre AS music_genre
-      FROM artists
-      LEFT JOIN musics ON artists.id = musics.artist_id
-    SQL
+    artists_query = SQLQueries::FETCH_ARTISTS_WITH_MUSIC
 
     execute_sql(artists_query)
-  end
-
-  def self.execute_sql(sql)
-    ActiveRecord::Base.connection.execute(sql)
   end
 end

@@ -2,10 +2,11 @@
 
 class ArtistsController < ApplicationController
   require 'csv'
+  include ArtistMusicCreation
+  include DatabaseExecution
+
 
   require_relative './concerns/sql_queries'
-
-  include ArtistMusicCreation
 
   def index
     @artists = []
