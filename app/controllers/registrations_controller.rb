@@ -2,6 +2,17 @@
 class RegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters
 
+  # skip_before_filter :require_no_authentication, only: [:new]
+
+  def new
+    super
+  end
+
+  def create
+  end
+
+
+
   protected
 
   def after_sign_up_path_for(resource)
