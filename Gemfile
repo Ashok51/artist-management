@@ -51,6 +51,14 @@ gem "bootstrap"
 
 gem "sassc-rails"
 
+#for code formatting
+gem 'rubocop', '~> 1.62', require: false
+
+#for n+1 queries
+gem 'bullet', group: :development
+
+gem 'rails-ujs'
+
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"

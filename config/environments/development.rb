@@ -17,6 +17,14 @@ Rails.application.configure do
   # Enable server timing
   config.server_timing = true
 
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.alert = true # Pop up a JavaScript alert in the browser
+    Bullet.bullet_logger = true # Log to the Bullet log file (log/bullet.log)
+    Bullet.console = true # Output to the console
+    Bullet.rails_logger = true # Log to the Rails log file
+  end
+
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
   if Rails.root.join("tmp/caching-dev.txt").exist?

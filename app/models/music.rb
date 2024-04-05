@@ -1,5 +1,5 @@
 class Music < ApplicationRecord
-  belongs_to :artist
+  belongs_to :artist, inverse_of: :musics
 
   validates :title, :album_name, :genre, presence: true
 

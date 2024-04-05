@@ -10,6 +10,12 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "artists#index"
 
-  resources :artists
+  resources :artists do
+    collection do
+      post :import
+      get :export, format: :csv
+    end
+  end
+
   resources :musics
 end

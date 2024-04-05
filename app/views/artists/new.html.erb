@@ -1,7 +1,12 @@
 <div class="container">
   <h3>New Artist</h3>
 
-  <%= render 'form', artist: @artist %>
+  <%= form_for(@artist, url: artists_path, method: :post,
+    html: { class: "form", data: { controller: 'nested-form',
+    nested_form_wrapper_selector_value: '.nested-form-wrapper' } }) do |form| %>
+
+    <%= render 'form', artist: @artist, form: form %>
+  <% end %>
 
   <div class="container">
     <%= link_to 'Back', artists_path %>

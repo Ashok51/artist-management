@@ -1,11 +1,22 @@
 class Artist < ApplicationRecord
-  has_many :musics, dependent: :destroy
+  has_many :musics, dependent: :destroy, inverse_of: :artist
   
   enum gender: { male: 1,
                  female: 2,
                  other: 3 }
 
-  validates :name, :date_of_birth, :address, :first_release_year, presence: true
+  validates :date_of_birth, :address, :first_release_year, presence: true
+
+  validates :name, uniqueness: true
 
   accepts_nested_attributes_for :musics, allow_destroy: true
+
+  def self.build_artist_object_from_json(result)
+    artists = []
+    result.each do |artist|
+      artists << Artist.new(artist)
+    end
+
+    artists
+  end
 end

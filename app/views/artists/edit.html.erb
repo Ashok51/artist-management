@@ -2,8 +2,12 @@
   <div>
     <h3>Edit Artist</h3>
   </div>
-
-  <%= render 'form', artist: @artist %>
+  <%= form_for(@artist, url: artist_path(@artist), method: :patch,
+    html: { class: "form", data: { controller: 'nested-form',
+    nested_form_wrapper_selector_value: '.nested-form-wrapper' } }) do |form| %>
+    
+    <%= render 'form', artist: @artist, form: form %>
+  <% end %>
 
   <div class="container">
     <%= link_to 'Back', artists_path %>
