@@ -11,10 +11,6 @@ class Artist < ApplicationRecord
 
   accepts_nested_attributes_for :musics, allow_destroy: true
 
-  def update_albums_released(album_released_count)
-    update!(no_of_albums_released: album_released_count)
-  end
-
   def self.build_artist_object_from_json(result)
     artists = []
     result.each do |artist|
