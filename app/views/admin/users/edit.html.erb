@@ -2,7 +2,7 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <h2 class="text-center">Edit User</h2>
-         <%= form_for(@added_user, url: added_user_path(@added_user), method: :patch) do |f| %>
+         <%= form_for(@admin_user, url: admin_user_path(@admin_user), method: :patch) do |f| %>
           <div class="row">
             <div class="col-md-6">
               <%= render 'shared/users_and_registrations/user_primary_info', f: f %>

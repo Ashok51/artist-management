@@ -4,11 +4,11 @@
       <h4 class="mt-5 mb-4">All Users</h4>
     </div>
     <div class="col-auto">
-      <%= link_to "Add User", new_added_user_path, class: "btn btn-primary float-end me-2" %>
+      <%= link_to "Add User", new_admin_user_path, class: "btn btn-primary float-end me-2" %>
     </div>
   </div>
 
-  <% if @added_users.present? %>
+  <% if @admin_users.present? %>
     <table class="table table-striped">
       <thead class="thead-dark">
         <tr>
@@ -22,17 +22,17 @@
         </tr>
       </thead>
       <tbody>
-        <% @added_users.each do |user| %>
+        <% @admin_users.each do |user| %>
           <tr>
-            <td><%= link_to "#{user.first_name} #{user.last_name}", added_user_path(user) %></td>
+            <td><%= link_to "#{user.first_name} #{user.last_name}", admin_user_path(user) %></td>
             <td><%= user.email %></td>
             <td><%= user.phone %></td>
             <td><%= user.date_of_birth %></td>
             <td><%= user.gender %></td>
             <td><%= user.address %></td>
             <td>
-              <%= link_to "Edit", edit_added_user_path(user), class: "btn btn-primary btn-sm me-2" %>
-              <%= button_to "Delete", added_user_path(user), method: :delete,
+              <%= link_to "Edit", edit_admin_user_path(user), class: "btn btn-primary btn-sm me-2" %>
+              <%= button_to "Delete", admin_user_path(user), method: :delete,
                          data: { confirm: "Are you sure you want to delete this user?" },
                          class: "btn btn-danger btn-sm" %>           
             </td>
@@ -41,8 +41,8 @@
       </tbody>
     </table>
     <% if @total_pages > 1 %>
-<%= render 'shared/paginate', path: added_users_path, page_number: @page_number, total_pages: @total_pages %>
-
+      <%= render 'shared/paginate', path: admin_users_path,
+          page_number: @page_number, total_pages: @total_pages %>
     <% end %>
 
   <% else %>
