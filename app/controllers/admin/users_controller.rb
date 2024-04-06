@@ -78,10 +78,6 @@ module Admin
 
     private
 
-    def update_user_params
-      user_params
-    end
-
     def generated_params_with_password(generated_password)
       user_params.merge(password: generated_password,
                         password_confirmation: generated_password)

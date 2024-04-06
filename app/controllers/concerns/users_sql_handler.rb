@@ -66,6 +66,7 @@ module UsersSqlHandler
   end
 
   def query_with_updated_field_values(update_user_sql, user_id)
+    update_user_params = user_params
     [
       update_user_sql,
       update_user_params[:first_name],
