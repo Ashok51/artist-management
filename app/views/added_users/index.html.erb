@@ -42,6 +42,11 @@
         <% end %>
       </tbody>
     </table>
+    <% if @total_pages > 1 %>
+<%= render 'shared/paginate', path: added_users_path, page_number: @page_number, total_pages: @total_pages %>
+
+    <% end %>
+
   <% else %>
     <div class="container">
       <p>

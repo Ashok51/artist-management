@@ -73,7 +73,7 @@ class ArtistsController < ApplicationController
 
   def import
     CsvImportService.import_artists_and_musics(params[:file])
-    redirect_to root_url, notice: 'Artists and Musics imported successfully.'
+    redirect_to artists_url, notice: 'Artists and Musics imported successfully.'
   rescue StandardError => e
     Rails.logger.error("Error while importing artist: #{e.message}")
 

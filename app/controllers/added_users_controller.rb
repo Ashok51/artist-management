@@ -1,8 +1,23 @@
 class AddedUsersController < ApplicationController
   before_action :set_user, only: %i[edit update destroy]
 
+  include SQLQueries
+  include DatabaseExecution
+  include UsersSqlHandler
+  require_relative './concerns/sql_queries'
+
   def index
-    @added_users = User.all
+    @page_number = params[:page].to_i || 1
+    per_page = 5
+
+    @total_pages = total_page_of_user_table(per_page)
+
+    query = SQLQueries::ORDERD_USERS_RECORD
+
+    result = Pagination.paginate(query, @page_number, per_page)
+
+    @added_users = User.build_user_objects_from_json(result)
+
   end
 
   def new

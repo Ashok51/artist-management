@@ -8,4 +8,13 @@ class User < ApplicationRecord
 
   # Enum gender
   enum gender: { male: 1, female: 2, other: 3 }
+
+  def self.build_user_objects_from_json(result)
+    users = []
+    result.each do |user|
+      users << User.new(user)
+    end
+
+    users
+  end
 end

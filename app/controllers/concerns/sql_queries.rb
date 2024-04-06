@@ -86,4 +86,17 @@ module SQLQueries
     FROM artists
     LEFT JOIN musics ON artists.id = musics.artist_id
   SQL
+
+  LIST_ALL_USERS = <<-SQL
+    SELECT * FROM users
+  SQL
+
+  COUNT_USERS = <<-SQL
+    SELECT COUNT(*) AS total_count FROM users
+  SQL
+
+  ORDERD_USERS_RECORD = <<-SQL
+    SELECT * FROM users
+    ORDER BY id
+  SQL
 end
