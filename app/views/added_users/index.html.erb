@@ -12,8 +12,7 @@
     <table class="table table-striped">
       <thead class="thead-dark">
         <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
+          <th>Name</th>
           <th>Email</th>
           <th>Phone</th>
           <th>Date of Birth</th>
@@ -25,8 +24,7 @@
       <tbody>
         <% @added_users.each do |user| %>
           <tr>
-            <td><%= user.first_name %></td>
-            <td><%= user.last_name %></td>
+            <td><%= link_to "#{user.first_name} #{user.last_name}", added_user_path(user) %></td>
             <td><%= user.email %></td>
             <td><%= user.phone %></td>
             <td><%= user.date_of_birth %></td>

@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class AddedUsersController < ApplicationController
   before_action :set_user, only: %i[edit update destroy]
+  before_action :sanitize_gender, only: %i[create update]
 
-  include SQLQueries
   include DatabaseExecution
   include UsersSqlHandler
   require_relative './concerns/sql_queries'
@@ -17,7 +19,6 @@ class AddedUsersController < ApplicationController
     result = Pagination.paginate(query, @page_number, per_page)
 
     @added_users = User.build_user_objects_from_json(result)
-
   end
 
   def new
@@ -25,24 +26,31 @@ class AddedUsersController < ApplicationController
   end
 
   def create
-    generated_password = Devise.friendly_token.first(8)
-    @added_user = User.new(generated_params_with_password(generated_password))
-    if @added_user.save
+    ActiveRecord::Base.transaction do
+      generated_password = Devise.friendly_token.first(8)
+      user_hash = create_new_user(generated_password)
+      @added_user = User.new(user_hash.first)
+
       # Send welcome email
       UserMailer.welcome_email(@added_user, generated_password).deliver_now
-
-      redirect_to added_users_path, notice: 'User created successfully.'
-    else
-      render :new
     end
+    redirect_to added_users_path, notice: 'User created successfully.'
+  rescue ActiveRecord::StatementInvalid => e
+    Rails.logger.error("Error while creating artist: #{e.message}")
+
+    render :new
+  end
+
+  def show
+    user_hash = show_user
+
+    @user = User.new(user_hash.first)
   end
 
   def edit
-    @added_user = User.find(params[:id])
   end
 
   def update
-    @added_user = User.find(params[:id])
     if @added_user.update(user_params)
       redirect_to root_path, notice: 'User was successfully updated.'
     else
@@ -68,6 +76,10 @@ class AddedUsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :phone, :date_of_birth, :gender, :address)
+    params.require(:user).permit(:first_name, :last_name, :email, :phone, :date_of_birth, :gender, :address)
+  end
+
+  def sanitize_gender
+    params[:user][:gender] = User.genders[params[:user][:gender].to_sym]
   end
 end

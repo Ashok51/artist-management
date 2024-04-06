@@ -99,4 +99,16 @@ module SQLQueries
     SELECT * FROM users
     ORDER BY id
   SQL
+
+  CREATE_NEW_USER = <<-SQL
+    INSERT INTO users
+    (first_name, last_name, date_of_birth, gender, address, encrypted_password, email, phone, created_at, updated_at)
+    VALUES
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    RETURNING *
+  SQL
+
+  SELECT_USER = <<-SQL
+    SELECT * FROM users WHERE id = ?
+  SQL
 end

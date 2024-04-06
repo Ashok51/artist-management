@@ -1,7 +1,7 @@
 <div class="col-md-6">
   <div class="mb-3">
     <%= f.label :gender, class: "form-label" %>
-    <%= f.select :gender, ['male', 'female', 'other'], { prompt: 'Select Gender' }, class: "form-select", required: true %>
+  <%= f.select :gender, User.genders.keys.map { |gender| [gender.capitalize, gender] }, { prompt: 'Select Gender' }, class: "form-select", required: true %>
   </div>
   <div class="mb-3">
     <%= f.label :phone, class: "form-label" %>
