@@ -56,7 +56,7 @@
     </table>
 
     <% if @total_pages > 1 %>
-      <%= render 'shared/paginate', page_number: @page_number, total_pages: @total_pages %>
+      <%= render 'shared/paginate', path: artists_path, page_number: @page_number, total_pages: @total_pages %>
     <% end %>
 
   <% else %>

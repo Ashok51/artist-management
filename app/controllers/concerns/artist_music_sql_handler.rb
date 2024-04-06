@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ArtistMusicCreation
+module ArtistMusicSqlHandler
   extend ActiveSupport::Concern
 
   def create_artist_record

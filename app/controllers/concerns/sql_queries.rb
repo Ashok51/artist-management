@@ -86,4 +86,39 @@ module SQLQueries
     FROM artists
     LEFT JOIN musics ON artists.id = musics.artist_id
   SQL
+
+  LIST_ALL_USERS = <<-SQL
+    SELECT * FROM users
+  SQL
+
+  COUNT_USERS = <<-SQL
+    SELECT COUNT(*) AS total_count FROM users
+  SQL
+
+  ORDERD_USERS_RECORD = <<-SQL
+    SELECT * FROM users
+    ORDER BY id
+  SQL
+
+  CREATE_NEW_USER = <<-SQL
+    INSERT INTO users
+    (first_name, last_name, date_of_birth, gender, address, encrypted_password, email, phone, created_at, updated_at)
+    VALUES
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    RETURNING *
+  SQL
+
+  SELECT_USER = <<-SQL
+    SELECT * FROM users WHERE id = ?
+  SQL
+
+  UPDATE_USER = <<-SQL
+    UPDATE users
+    SET first_name = ?, last_name= ?, date_of_birth = ?, gender = ?, address = ?, email = ?, phone = ?, updated_at = ?
+    WHERE id = ?
+  SQL
+
+  DELETE_USER = <<-SQL
+    DELETE FROM users where id = ?
+  SQL
 end

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+  <h1>Welcome to Artist Management Sysem!</h1>
+  <p>You have been added to Artist Management system. Below are your login credentials:</p>
+  <p>Email: <%= @user.email %></p>
+  <p>Password: <%= @password %></p>
+  <p>Login Link: <%= link_to 'Login', new_user_session_url %></p>
+</body>
+</html>

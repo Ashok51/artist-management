@@ -1,15 +1,15 @@
-  <div class="pagination-container text-center">
-    <ul class="pagination">
-      <% if @page_number > 1 %>
-        <li class="page-item"><%= link_to 'Previous', artists_path(page: @page_number - 1), class: "page-link" %></li>
-      <% end %>
-      
-      <% (1..@total_pages).each do |page| %>
-        <li class="page-item"><%= link_to page, artists_path(page: page), class: "page-link" %></li>
-      <% end %>
+<div class="pagination-container text-center">
+  <ul class="pagination">
+    <% if @page_number > 1 %>
+      <li class="page-item"><%= link_to 'Previous', "#{path}?page=#{@page_number - 1}", class: "page-link" %></li>
+    <% end %>
 
-      <% if @page_number < @total_pages %>
-        <li class="page-item"><%= link_to 'Next', artists_path(page: @page_number + 1), class: "page-link" %></li>
-      <% end %>
-    </ul>
-  </div>
+    <% (1..@total_pages).each do |page| %>
+      <li class="page-item"><%= link_to page, "#{path}?page=#{page}", class: "page-link" %></li>
+    <% end %>
+
+    <% if @page_number < @total_pages %>
+      <li class="page-item"><%= link_to 'Next', "#{path}?page=#{@page_number + 1}", class: "page-link" %></li>
+    <% end %>
+  </ul>
+</div>
