@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h2 class="text-center">Edit User</h2>
+         <%= form_for(@added_user, url: added_user_path(@added_user), method: :patch) do |f| %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= render 'shared/users_and_registrations/user_primary_info', f: f %>
+            </div>
+            <%= render 'shared/users_and_registrations/user_secondary_info', f: f %>
+          </div>
+
+          <div class="mb-3 text-center">
+            <%= f.submit "Edit User", class: "btn btn-primary btn-lg" %>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>
