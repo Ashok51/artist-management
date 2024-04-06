@@ -111,4 +111,14 @@ module SQLQueries
   SELECT_USER = <<-SQL
     SELECT * FROM users WHERE id = ?
   SQL
+
+  UPDATE_USER = <<-SQL
+    UPDATE users
+    SET first_name = ?, last_name= ?, date_of_birth = ?, gender = ?, address = ?, email = ?, phone = ?, updated_at = ?
+    WHERE id = ?
+  SQL
+
+  DELETE_USER = <<-SQL
+    DELETE FROM users where id = ?
+  SQL
 end

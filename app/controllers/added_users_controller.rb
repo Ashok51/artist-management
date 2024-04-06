@@ -9,16 +9,20 @@ class AddedUsersController < ApplicationController
   require_relative './concerns/sql_queries'
 
   def index
-    @page_number = params[:page].to_i || 1
-    per_page = 5
+    ActiveRecord::Base.transaction do
+      @page_number = params[:page].to_i || 1
+      per_page = 5
 
-    @total_pages = total_page_of_user_table(per_page)
+      @total_pages = total_page_of_user_table(per_page)
 
-    query = SQLQueries::ORDERD_USERS_RECORD
+      query = SQLQueries::ORDERD_USERS_RECORD
 
-    result = Pagination.paginate(query, @page_number, per_page)
+      result = Pagination.paginate(query, @page_number, per_page)
 
-    @added_users = User.build_user_objects_from_json(result)
+      @added_users = User.build_user_objects_from_json(result)
+    end
+  rescue ActiveRecord::StatementInvalid => e
+    Rails.logger.error("Error while fetching users: #{e.message}")
   end
 
   def new
@@ -36,7 +40,7 @@ class AddedUsersController < ApplicationController
     end
     redirect_to added_users_path, notice: 'User created successfully.'
   rescue ActiveRecord::StatementInvalid => e
-    Rails.logger.error("Error while creating artist: #{e.message}")
+    Rails.logger.error("Error while creating user: #{e.message}")
 
     render :new
   end
@@ -51,20 +55,32 @@ class AddedUsersController < ApplicationController
   end
 
   def update
-    if @added_user.update(user_params)
-      redirect_to root_path, notice: 'User was successfully updated.'
-    else
-      render :edit
+    ActiveRecord::Base.transaction do
+      update_user
     end
+    redirect_to added_users_url, notice: 'User updated successfully.'
+  rescue ActiveRecord::StatementInvalid => e
+    Rails.logger.error("Error updating user: #{e.message}")
+
+    redirect_to added_users_url, alert: 'Unable to update user.'
   end
 
   def destroy
-    @added_user.destroy!
-
+    ActiveRecord::Base.transaction do
+      delete_user
+    end
     redirect_to added_users_url, notice: 'User deleted successfully.'
+  rescue ActiveRecord::StatementInvalid => e
+    Rails.logger.error("Error while deleting user: #{e.message}")
+
+    redirect_to added_users_url, alert: 'Unable to delete user.'
   end
 
   private
+
+  def update_user_params
+    user_params
+  end
 
   def generated_params_with_password(generated_password)
     user_params.merge(password: generated_password,

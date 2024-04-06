@@ -28,6 +28,26 @@ module UsersSqlHandler
     sanitize_and_execute_sql(query_with_field_values).to_a
   end
 
+  def update_user
+    user_id = params[:id]
+
+    update_user_sql = SQLQueries::UPDATE_USER
+
+    query_with_updated_field_values =  query_with_updated_field_values(update_user_sql, user_id)
+
+    sanitize_and_execute_sql(query_with_updated_field_values)
+  end
+
+  def delete_user
+    user_id = params[:id]
+
+    delete_user_sql = SQLQueries::DELETE_USER
+
+    sanitize_and_execute_sql([delete_user_sql, user_id])
+  end
+
+  private
+
   def query_and_field_values_array_of_user(query, generated_params)
     [
       query,
@@ -42,6 +62,21 @@ module UsersSqlHandler
       generated_params[:phone],
       Time.current,
       Time.current
+    ]
+  end
+
+  def query_with_updated_field_values(update_user_sql, user_id)
+    [
+      update_user_sql,
+      update_user_params[:first_name],
+      update_user_params[:last_name],
+      update_user_params[:date_of_birth],
+      update_user_params[:gender],
+      update_user_params[:address],
+      update_user_params[:email],
+      update_user_params[:phone],
+      Time.current,
+      user_id
     ]
   end
 
