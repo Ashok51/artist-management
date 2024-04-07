@@ -32,7 +32,6 @@
           <th>Address</th>
           <th>First Released Year</th>
           <th>No. of Albums Released</th>
-          <th>Created At</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -45,7 +44,6 @@
             <td><%= artist.address %></td>
             <td><%= artist.first_release_year %></td>
             <td><%= artist.no_of_albums_released %></td>
-            <td><%= artist.created_at %></td>
             <td>
               <%= link_to "Edit", edit_artist_path(artist), class: "btn btn-secondary btn-sm" %>
               <%= button_to "Delete", artist_path(artist), method: :delete,
