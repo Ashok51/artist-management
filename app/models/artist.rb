@@ -19,4 +19,8 @@ class Artist < ApplicationRecord
 
     artists
   end
+
+  def self.map_gender_string_to_enum(music_attrs)
+    genders[music_attrs["gender"]]
+  end
 end

@@ -7,4 +7,8 @@ class Music < ApplicationRecord
                 pop: 1,
                 hip_hop: 2,
                 jazz: 3 }
+
+  def self.map_genre_string_to_enum(artist_attrs)
+    genres[artist_attrs['genre']]
+  end
 end

@@ -37,7 +37,7 @@
   <div class="col-md-4">
     <div class="form-group">
       <%= form.label :gender, class: "form-label" %>
-      <%= form.select :gender, gender_options_for_select, { prompt: 'Select Gender' }, class: "form-select form-control" %>
+      <%= form.select :gender, gender_options_for_select, { prompt: 'Select Gender', selected: selected_artist_gender(form.object.gender) }, class: "form-select form-control" %>
     </div>
   </div>
 </div>

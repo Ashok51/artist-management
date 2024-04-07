@@ -56,14 +56,13 @@ module SQLQueries
   SQL
 
   CREATE_ARTIST_FROM_CSV = lambda do |artist_values|
-    "INSERT INTO artists (name, date_of_birth, address, first_release_year, gender, no_of_albums_released, created_at, updated_at)
+    "INSERT INTO artists (name, date_of_birth, address, first_release_year, gender, created_at, updated_at)
     VALUES (#{artist_values}, NOW(), NOW())
     ON CONFLICT (name) DO UPDATE SET
       date_of_birth = EXCLUDED.date_of_birth,
       address = EXCLUDED.address,
       first_release_year = EXCLUDED.first_release_year,
       gender = EXCLUDED.gender,
-      no_of_albums_released = EXCLUDED.no_of_albums_released,
       updated_at = NOW()
     RETURNING id"
   end
