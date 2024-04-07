@@ -5,8 +5,7 @@ class CsvImportService
 
   def self.import_artists_and_musics(file)
     CSV.foreach(file.path, headers: true) do |row|
-      artist_attrs = row.to_h.slice('name', 'date_of_birth', 'address', 'first_release_year', 'gender',
-                                    'no_of_albums_released')
+      artist_attrs = row.to_h.slice('name', 'date_of_birth', 'address', 'first_release_year', 'gender')
       artist_attrs['gender'] = Artist.map_gender_string_to_enum(artist_attrs) # Map string to enum value
 
       artist_values = artist_attrs.values.map { |value| sanitize_and_quote(value) }.join(', ')
