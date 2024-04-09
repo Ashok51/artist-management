@@ -24,7 +24,7 @@ class ArtistsController < ApplicationController
   def create
     ActiveRecord::Base.transaction do
       artist_id = create_artist_record
-      create_music_of_artist(artist_id)
+      create_music_of_artist(artist_id) if musics_params.present?
     end
     redirect_to artists_url, notice: 'Artist created successfully.'
   rescue ActiveRecord::StatementInvalid => e
