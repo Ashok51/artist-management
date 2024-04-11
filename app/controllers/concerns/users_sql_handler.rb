@@ -1,5 +1,5 @@
 module UsersSqlHandler
-  extend ActiveSupport::Concern
+  # extend ActiveSupport::Concern
 
   def total_page_of_user_table(per_page)
     query = SQLQueries::COUNT_USERS
